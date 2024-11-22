@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.stats as stats
+import numpy as np
 
 # Load the Iris dataset from a CSV file (replace with your file path if needed)
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
@@ -17,9 +18,9 @@ print(df.head())
 print("2. Print the Histogram and Kernel Density Estimation for the attribute 'sepal_length'")
 plt.hist(df[attribute], bins=20, density=True, alpha=0.6, color='g', label='Histogram')
 
-# Overlay KDE (using scipy.stats.norm)
+# Overlay KDE (using scipy.stats.gaussian_kde)
 xmin, xmax = plt.xlim()
-x = pd.np.linspace(xmin, xmax, 100)
+x = np.linspace(xmin, xmax, 100)
 kde = stats.gaussian_kde(df[attribute])
 plt.plot(x, kde(x), color='blue', label='KDE')
 
@@ -42,4 +43,5 @@ print(f"4. Print the skewness of the attribute 'sepal_length'\nSkewness for sepa
 # 5. Calculate and print kurtosis
 kurtosis = df[attribute].kurtosis()
 print(f"5. Print the kurtosis of the attribute 'sepal_length'\nKurtosis for sepal length = {kurtosis}")
+
 
