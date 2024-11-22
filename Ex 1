@@ -1,35 +1,45 @@
-# Import necessary libraries
-import plotly.express as px
-import seaborn as sns
+import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.stats as stats
-import pandas as pd
-# Load the Iris dataset
-df = px.data.iris()
 
-# Select the 'sepal_length' attribute
+# Load the Iris dataset from a CSV file (replace with your file path if needed)
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+columns = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
+df = pd.read_csv(url, header=None, names=columns)
+
 attribute = 'sepal_length'
 
-# 1. Print the first five records of the selected attribute
+# 1. Print the First Five Records
 print("1. Printing the First Five Records:")
 print(df.head())
-# 2. Plot the Histogram and Kernel Density Estimation for the attribute 'sepal_length'
+
+# 2. Histogram and Kernel Density Estimation (KDE) for 'sepal_length'
 print("2. Print the Histogram and Kernel Density Estimation for the attribute 'sepal_length'")
-sns.histplot(df[attribute], kde=True)
+plt.hist(df[attribute], bins=20, density=True, alpha=0.6, color='g', label='Histogram')
+
+# Overlay KDE (using scipy.stats.norm)
+xmin, xmax = plt.xlim()
+x = pd.np.linspace(xmin, xmax, 100)
+kde = stats.gaussian_kde(df[attribute])
+plt.plot(x, kde(x), color='blue', label='KDE')
+
 plt.title('Histogram and KDE of Sepal Length')
 plt.xlabel('Sepal Length')
 plt.ylabel('Frequency')
+plt.legend()
 plt.show()
 
-# 3. Print the probability plot of 'sepal_length'
+# 3. Probability Plot of 'sepal_length'
 print("3. Print the probability plot of 'sepal_length'")
 stats.probplot(df[attribute], dist="norm", plot=plt)
 plt.title('Probability Plot of Sepal Length')
 plt.show()
-# 4. Print the skewness of the attribute 'sepal_length'
+
+# 4. Calculate and print skewness
 skewness = df[attribute].skew()
 print(f"4. Print the skewness of the attribute 'sepal_length'\nSkewness for sepal length = {skewness}")
 
-# 5. Print the kurtosis of the attribute 'sepal_length'
+# 5. Calculate and print kurtosis
 kurtosis = df[attribute].kurtosis()
 print(f"5. Print the kurtosis of the attribute 'sepal_length'\nKurtosis for sepal length = {kurtosis}")
+
